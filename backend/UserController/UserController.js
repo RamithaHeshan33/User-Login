@@ -49,29 +49,23 @@ const registerStudent = async (req, res, next) => {
 
 exports.registerStudent = registerStudent;
 
-// teacher Registration
-// const registerTeacher = async (req, res, next) => {
-//     const {name, email, password, phone} = req.body;
-//     let teacher;
-//     try {
-//         teacher = new teacherModel({
-//             name,
-//             email,
-//             password,
-//             phone
-//         });
-//         await teacher.save();
-//     }
-//     catch(err) {
-//         console.log(err);
-//     }
+//student login
+const loginStudent = async (req, res, next) => {
+    const {email, password} = req.body;
+    let student;
+    try {
+        student = await studentModel.findOne({email, password});
+    }
+    catch(err) {
+        console.log(err);
+    }
 
-//     if(!teacher) {
-//         return res.status(404).json({
-//             message: "Teacher's registration failed"
-//         });
-//     }
-//     return res.staus(200).json({teacher});
-// }
+    if(!student) {
+        return res.status(404).json({
+            message: "Invalid email or password"
+        });
+    }
+    return res.status(200).json({student});
+}
 
-// exports.registerTeacher = registerTeacher;
+exports.loginStudent = loginStudent;

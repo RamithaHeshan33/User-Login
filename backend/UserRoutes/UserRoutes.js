@@ -6,6 +6,6 @@ const studentModel = require('../UserModel/UserModel');
 router.get('/', userController.getAllStudents);
 router.post('/', userController.registerStudent);
 
-// router.post('/teacher', userController.registerTeacher);
+router.post('/login', userController.loginStudent);
 
 module.exports = router;
