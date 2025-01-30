@@ -1,6 +1,7 @@
 import './Login.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 function Login() {
     const navigate = useNavigate();
@@ -44,11 +45,19 @@ function Login() {
     return (
         <div>
             <div className='Login'>
-                <div className='login-left'>
+                <motion.div className='login-left'
+                    initial={{ x: -100, opacity: 0 }} // Start off-screen to the left
+                    animate={{ x: 0, opacity: 1 }}  // Move to position with fade-in
+                    transition={{ duration: 0.75, ease: "easeInOut" }}  // Smooth transition
+                >
                     <img src='res/student.png' alt='student' />
-                </div>
+                </motion.div>
 
-                <div className='login-right'>
+                <motion.div className='login-right'
+                    initial={{ x: 100, opacity: 0 }} // Start off-screen to the left
+                    animate={{ x: 0, opacity: 1 }}  // Move to position with fade-in
+                    transition={{ duration: 0.75, ease: "easeInOut" }}  // Smooth transition
+                >
                     <form onSubmit={handleLogin}>
                         <h1>Student Login</h1>
 
@@ -80,7 +89,7 @@ function Login() {
                     <p className='text'>
                         Don't have an account? <button onClick={() => navigate('/register')}>Register</button>
                     </p>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Login/Login.css';
+import { motion } from 'framer-motion';
 
 const REGISTER_URL = 'http://localhost:5000/students/teachers';
 
@@ -49,11 +50,19 @@ function TeacherRegister() {
     return (
         <div>
             <div className='Login'>
-                <div className='login-left'>
-                    <img src='res/student.png' alt='student' />
-                </div>
+                <motion.div className='login-left'
+                    initial={{ x: -100, opacity: 0 }} // Start off-screen to the left
+                    animate={{ x: 0, opacity: 1 }}  // Move to position with fade-in
+                    transition={{ duration: 0.75, ease: "easeInOut" }}  // Smooth transition
+                >
+                    <img src='res/teacher.png' alt='student' />
+                </motion.div>
 
-                <div className='login-right'>
+                <motion.div className='login-right'
+                    initial={{ x: 100, opacity: 0 }} // Start off-screen to the left
+                    animate={{ x: 0, opacity: 1 }}  // Move to position with fade-in
+                    transition={{ duration: 0.75, ease: "easeInOut" }}  // Smooth transition
+                >
                     <form onSubmit={handleSubmit} method='post'>
                         <h1>Teacher Registration</h1>
 
@@ -74,7 +83,7 @@ function TeacherRegister() {
                         <button type='submit' className='registerBtn'>Register</button>
                     </form>
                     <p className='text'>Already have an account? <button onClick={() => navigate('/teacherlogin')}>Login</button></p>
-                </div>
+                </motion.div>
             </div>
         </div>
     );
