@@ -1,5 +1,4 @@
 const studentModel = require('../UserModel/UserModel');
-// const teacherModel = require('../UserModel/UserModel');
 
 //get all students
 const getAllStudents = async (req, res, next) => {
@@ -51,21 +50,20 @@ exports.registerStudent = registerStudent;
 
 //student login
 const loginStudent = async (req, res, next) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
+    
     let student;
     try {
-        student = await studentModel.findOne({email, password});
-    }
-    catch(err) {
+        student = await studentModel.findOne({ email, password }).select("-password");
+    } catch (err) {
         console.log(err);
     }
 
-    if(!student) {
-        return res.status(404).json({
-            message: "Invalid email or password"
-        });
+    if (!student) {
+        return res.status(404).json({ message: "Invalid email or password" });
     }
-    return res.status(200).json({student});
-}
+
+    return res.status(200).json({ user: student });
+};
 
 exports.loginStudent = loginStudent;

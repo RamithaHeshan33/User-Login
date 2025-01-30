@@ -1,64 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL = 'http://localhost:5000/students/profile'; // Updated endpoint
-
 function Dashboard() {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const fetchUserDetails = async () => {
-            const token = localStorage.getItem('token');
+        const storedUser = localStorage.getItem('user');
 
-            if (!token) {
-                navigate('/login');
-                return;
-            }
-
+        if (storedUser && storedUser !== "undefined") {
             try {
-                const response = await fetch(API_URL, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    setUser(data);
-                } else {
-                    localStorage.removeItem('token');
-                    navigate('/login');
-                }
+                setUser(JSON.parse(storedUser));
             } catch (error) {
-                console.error('Failed to fetch user:', error);
-                localStorage.removeItem('token');
+                console.error("Error parsing user data:", error);
+                localStorage.removeItem('user');
                 navigate('/login');
             }
-        };
-
-        fetchUserDetails();
+        } else {
+            navigate('/login');
+        }
     }, [navigate]);
 
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        navigate('/login');
+    };
+
     return (
-        <div className="dashboard-container">
-            <h1>Welcome to Your Dashboard</h1>
+        <div>
+            <h1>Welcome to the Dashboard</h1>
             {user ? (
-                <div className="user-info">
+                <div>
                     <p><strong>Name:</strong> {user.name}</p>
                     <p><strong>Email:</strong> {user.email}</p>
                     <p><strong>Phone:</strong> {user.phone}</p>
-                    <button 
-                        className="logout-btn"
-                        onClick={() => {
-                            localStorage.removeItem('token');
-                            navigate('/login');
-                        }}
-                    >
-                        Logout
-                    </button>
+                    <button onClick={handleLogout}>Logout</button>
                 </div>
             ) : (
                 <p>Loading user details...</p>
